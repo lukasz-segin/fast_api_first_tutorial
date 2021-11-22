@@ -1,3 +1,6 @@
+import csv
+import random
+import string
 from typing import Optional
 from fastapi import FastAPI
 from book import BookCategory
@@ -12,7 +15,11 @@ async def root():
 
 @app.get("/items/{item_id}")
 async def read_item(item_id: int):
-    return {"item_id": item_id}
+    """Generation of digit code of k digits! Sorting a dictionary."""
+
+    code = "".join(random.choices(string.digits, k=6))
+
+    return {"item_id": item_id, "code": code}
 
 
 @app.get("/users/me")
@@ -67,3 +74,65 @@ async def read_item(item_id: str, q: Optional[str] = None, short: bool = False):
     if not short:
         item.update({"description": "This is an amazing item that has a long description"})
     return item
+
+
+# @app.get("/sorted-items/")
+# async def sorted_items():
+#     users = [
+#         {"first_name": "Helena", "age": 39},
+#         {"first_name": "Bartek", "age": 10},
+#         {"first_name": "Ania", "age": 9},
+#     ]
+#     return {"users": users}
+
+# """Process and Sort dictionary using function"""
+#
+# users = [
+#     {"first_name": "Helena", "age": 39},
+#     {"first_name": "Bartek", "age": 10},
+#     {"first_name": "Ania", "age": 9},
+# ]
+#
+#
+# def get_user_name(users):
+#     """Reading name and change letters to lower."""
+#
+#     return users["first_name"].lower()
+#
+#
+# def get_sorted_dictionary(users):
+#     """Sorting nesterd dictionary"""
+#
+#     if not isinstance(users, dict):
+#         raise ValueError("Wrong value in dictionary")
+#     if not len(users):
+#         raise ValueError("Dictionary is empty")
+#     users_by_name = sorted(users, key=get_user_name)
+#     return users_by_name
+
+# """Reading rows from file using list comprehension"""
+#
+#
+# def read_file(file_name):
+#     """Read file row after row"""
+#
+#     fread = open(file_name, "r")
+#     data = [line for line in fread if line.startswith(">>")]
+#     return data
+#
+# # print(read_file("log.txt"))
+
+# """Processing big file using generator"""
+#
+#
+# def read_file(file_name):
+#     """Read file row after row"""
+#
+#     with open(file_name, "r") as fread:
+#         for line in fread:
+#             yield line
+#
+#
+# for line in read_file("log.txt"):
+#     if line.startswith(">>"):
+#         print(line)
