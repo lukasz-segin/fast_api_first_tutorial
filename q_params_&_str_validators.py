@@ -6,6 +6,7 @@ app = FastAPI()
 
 @app.get("/items/")
 async def read_items(q: Optional[str] = Query(None, min_length=4, max_length=30, regex="^Item",)):
+    """q is optional"""
     results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
     if q:
         results.update({"q": q})
@@ -14,6 +15,7 @@ async def read_items(q: Optional[str] = Query(None, min_length=4, max_length=30,
 
 @app.get("/items1/")
 async def read_items(q: Optional[str] = Query(None, min_length=4, max_length=30,)):
+    """q is optional"""
     results = {"items1": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
     if q:
         results.update({"q": q})
@@ -22,7 +24,10 @@ async def read_items(q: Optional[str] = Query(None, min_length=4, max_length=30,
 
 @app.get("/items2/")
 async def read_items(q: str = Query(..., min_length=4, max_length=30,)):
-    """When you need to declare a value as required while using Query, you can use ... as the first argument"""
+    """
+    q is required.
+    When you need to declare a value as required while using Query, you can use ... as the first argument
+    """
 
     results = {"items1": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
     if q:
